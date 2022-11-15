@@ -82,7 +82,8 @@
         let score = 0;
         let gameOver = false
         let pause = true
-        let intervalStart = Date.now()
+        let intervalStart
+        let elipsedTimeBeforePause = 0
 
         const board = document.getElementById('board')
 
@@ -123,7 +124,7 @@
             }
 
             let bonus;
-            const elapsedTime = Date.now() - intervalStart;
+            const elapsedTime = Date.now() - intervalStart + elipsedTimeBeforePause;
             if (elapsedTime < 600) {
                 bonus = 150
             } else if (elapsedTime < 1000) {
@@ -197,6 +198,7 @@
                 if (bodyPart.y === food.y && bodyPart.x === food.x) {
                     score += bonus
                     intervalStart = Date.now()
+                    elipsedTimeBeforePause = 0
                     eaten = true
                     food = {
                         x: Math.floor((Math.random() * 21) + 1),
@@ -312,14 +314,23 @@
             yDown = null;
         };
 
+        const handlePause = () => {
+            if (pause) {
+                intervalStart = Date.now()
+            } else {
+                elipsedTimeBeforePause += Date.now() - intervalStart
+            }
+            pause = !pause
+        }
+
         document.addEventListener('keydown', event => {
             if (event.code === 'Space') {
-                pause = !pause
+                handlePause()
             }
         })
 
         document.addEventListener('click', event => {
-            pause = !pause
+            handlePause()
         })
 
         setInterval(() => {
