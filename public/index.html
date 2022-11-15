@@ -144,6 +144,12 @@
                 bonus = 10
             } else if (elapsedTime < 15000) {
                 bonus = 5
+            } else if (elapsedTime < 18000) {
+                bonus = 3
+            } else if (elapsedTime < 21000) {
+                bonus = 2
+            } else {
+                bonus = 1
             }
 
             const scoreBoard = document.getElementById("scoreBoard")
